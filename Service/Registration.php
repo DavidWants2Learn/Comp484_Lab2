@@ -1,14 +1,16 @@
 <?php
 require_once 'Connection.php';
 
+//var_dump($_POST);
+
 if (isset($_POST['reg_btn']))
 {
     $uid = $_POST['uname'];
     $pwd = $_POST['pword'];
 
-    if (empty($uid) && (empty($pwd)))
+    if ((empty($uid) && empty($uid)) || empty($uid) || empty($pwd))
     {
-        echo "Username and password cannot be empty.";
+        echo "Username and password cannot be empty. Registration";
         exit();
     }
     else
@@ -40,11 +42,27 @@ if (isset($_POST['reg_btn']))
             $_SESSION['u_id'] = $_POST['uname'];
             $_SESSION['p_wd'] = $hash_pass;
 
+//            var_dump($uid);
+
+//            $sql = "SELECT username FROM persons;
+//            for ( reset($sql); $element = 'key'; next($sql) )
+//            {
+//              echo "Hello World.";
+//            }
+
             header("Location: ../Client/homepage.php");
         }
     }
 }
+else if (isset($_POST['log_btn']))
+{
+    session_start();
+    $_SESSION['login_session_btn'] = $_POST['log_btn'];
+    $_SESSION['u_id'] = $_POST['uname'];
+    $_SESSION['p_wd'] = $_POST['pword'];
+    header("Location: ../Service/Login_Logic.php");
+}
 else
 {
-    echo "Hello world.";
+    echo "Something's wrong on the Registration.";
 }

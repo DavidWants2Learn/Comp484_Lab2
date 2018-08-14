@@ -6,13 +6,20 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script>
+        function Submit_button(i)
+        {
+        }
+        // window.addEventListener("load", Submit_button, true);
+    </script>
 </head>
 <body>
-    <form action="../Service/Registration.php" method="POST">
+<!--action="../Service/Registration.php"-->
+    <form id="form" action="../Service/Registration.php" method="POST">
         Username: <input type="text" name="uname" /><br>
         Password: <input type="password" name="pword" /><br>
-        <button type="submit" name="log_btn">Login</button>
-        <button type="submit" name="reg_btn">Registration</button>
+        <button type="submit" name="reg_btn" id="reg_btn">Registration</button>
+        <button type="submit" name="log_btn" id="log_btn">Login</button>
     </form>
 </body>
 </html>
