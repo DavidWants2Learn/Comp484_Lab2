@@ -28,19 +28,19 @@ if (isset($_POST['reg_btn']))
         }
         else
         {
-            //pass the salt
+            $salt = 'buckaroo';
+            //hash the pass
             $hash_pass = password_hash($pwd, PASSWORD_DEFAULT);
+            //pass the salt
+            $salt_pass = md5($salt, $hash_pass);
 
-            echo $hash_pass;
-
-
-            $sql = "INSERT INTO persons (username, password) VALUES ('".$uid."', '".$hash_pass."' )";
+            $sql = "INSERT INTO persons (username, password) VALUES ('".$uid."', '".$salt_pass."' )";
 
             mysqli_query($conn, $sql);
 
             session_start();
             $_SESSION['u_id'] = $_POST['uname'];
-            $_SESSION['p_wd'] = $hash_pass;
+            $_SESSION['p_wd'] = $salt_pass;
 
 //            var_dump($uid);
 
@@ -56,13 +56,19 @@ if (isset($_POST['reg_btn']))
 }
 else if (isset($_POST['log_btn']))
 {
+    $salt = '?!/b-u%c#k*a@r(o(o)+/';
+    $pwd = $_POST['pword'];
+    $hash_pass = password_hash($pwd, PASSWORD_DEFAULT);
+    $salt_pass = md5($salt, $hash_pass);
+
     session_start();
     $_SESSION['login_session_btn'] = $_POST['log_btn'];
     $_SESSION['u_id'] = $_POST['uname'];
-    $_SESSION['p_wd'] = $_POST['pword'];
+    $_SESSION['s_pw'] = $salt_pass;
+    $_SESSION['p_wd'] = $hash_pass;
     header("Location: ../Service/Login_Logic.php");
 }
 else
 {
-    echo "Something's wrong on the Registration.";
+    echo "Something's wrong with the Registration.";
 }

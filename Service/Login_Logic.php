@@ -18,24 +18,7 @@ if (isset($_POST['log_btn']))
     }
     else
     {
-        $sql = "SELECT username, password FROM persons where username=? ORDER BY username, password ASC";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $uid);
-
-        if (! $stmt->execute())
-        {
-           die("The statement did not execute.");
-        }
-
-        $stmt->bind_result($uid, $pwd);
-
-        while ($stmt->fetch())
-        {
-            ?><tr><td><?php print $uid; ?></td>
-                  <td><?php print $pwd; ?></td>
-    <?php
-        }
-        $conn->close();
+        header("Location: ../Client/homepage.php");
     }
 }
 else
