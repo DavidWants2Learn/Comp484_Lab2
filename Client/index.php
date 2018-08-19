@@ -8,7 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-<!--action="../Service/Registration.php"-->
     <form id="form" action="../Service/Registration.php" method="POST">
         Username: <input type="text" name="uname" /><br>
         Password: <input type="password" name="pword" /><br>
