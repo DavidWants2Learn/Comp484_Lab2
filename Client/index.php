@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<body>
-    <form id="form" action="../Service/Registration.php" method="POST">
-        Username: <input type="text" name="uname" /><br>
-        Password: <input type="password" name="pword" /><br>
-        <button type="submit" name="reg_btn" id="reg_btn">Registration</button>
-        <button type="submit" name="log_btn" id="log_btn">Login</button>
-    </form>
-</body>
+    <body>
+        <form id="form" action="../Service/ServiceLogic.php" method="POST">
+            Username: <input type="text" name="uname" /><br>
+            Password: <input type="password" name="pword" /><br>
+            <button type="submit" name="reg_btn" id="reg_btn">Registration</button>
+            <button type="submit" name="log_btn" id="log_btn">Login</button>
+        </form>
+    </body>
 </html>

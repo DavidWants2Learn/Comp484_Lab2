@@ -2,8 +2,6 @@
 require_once 'Connection.php';
 
 
-//var_dump($_POST);
-
 if (isset($_POST['reg_btn']))
 {
     $uid = $_POST['uname'];
@@ -11,39 +9,36 @@ if (isset($_POST['reg_btn']))
 
     if ((empty($uid) && empty($pwd)) || empty($uid) || empty($pwd))
     {
+        //if username or password field is not set.
         echo "Username and password cannot be empty.";
         exit();
     }
     else
     {
-        //echo $_POST['uname'];
+        //query name
         $sql = "SELECT * FROM persons WHERE username = '$uid'";
-
         $result = mysqli_query($conn, $sql);
         $result_check = mysqli_num_rows($result);
 
         if ($result_check)
         {
+            //if username already exists.
             echo "Username already exists, please choose another name.";
             exit();
         }
         else
         {
-            $byte_i = 4;
-            $bytes = openssl_random_pseudo_bytes($byte_i);
-            $salt = bin2hex($bytes);
+            $salt = hash("sha512", $uid);
 
-            //pass the salt
-            $salt_pass = hash("sha512", $salt.$pwd);
+            //salt the pass
+            $hash = hash("sha512", $salt.$pwd);
 
-            $sql = "INSERT INTO persons (username, password, hashPW) VALUES ('".$uid."', '".$pwd."', '".$salt_pass."' )";
+            $sql = "INSERT INTO persons (username, salt, hash) VALUES ('".$uid."', '".$salt."', '".$hash."')";
 
             mysqli_query($conn, $sql);
 
             session_start();
             $_SESSION['u_id'] = $uid;
-            $_SESSION['p_wd'] = $pwd;
-            $_SESSION['s_pw'] = $salt_pass;
 
             header("Location: ../Client/homepage.php");
         }
@@ -56,30 +51,33 @@ else if (isset($_POST['log_btn']))
 
     if ((empty($uid) && empty($pwd)) || empty($uid) || empty($pwd))
     {
+        //If username // password field is empty.
         echo "Username and password cannot be empty.";
         exit();
     }
     else
     {
         $sql = "SELECT * FROM persons WHERE username = '$uid'";
-
         $result = mysqli_query($conn, $sql);
         $result_check = mysqli_num_rows($result);
         if (!$result_check)
         {
+            //If username does not exist.
             echo "No user by that name, please register.";
             exit();
         }
         else
         {
+            $salt = hash("sha512", $uid);
+
             //pass the salt
-            $salt_pass = hash("sha512", $salt.$pwd);
+            $hash = hash("sha512", $salt.$pwd);
 
             $sql = "SELECT username FROM persons WHERE username = '$uid'";
             $result = mysqli_query($conn, $sql);
             $result_check = mysqli_num_rows($result);
 
-            $sqlp = "SELECT password FROM persons WHERE password = '$pwd'";
+            $sqlp = "SELECT hash FROM persons WHERE hash = '$hash'";
             $resultp = mysqli_query($conn, $sqlp);
             $result_checkp = mysqli_num_rows($resultp);
 
@@ -93,9 +91,7 @@ else if (isset($_POST['log_btn']))
                 session_start();
                 $_SESSION['login_session_btn'] = $_POST['log_btn'];
                 $_SESSION['u_id'] = $_POST['uname'];
-                $_SESSION['p_wd'] = $_POST['pword'];
-                $_SESSION['s_pw'] = $salt_pass;
-                header("Location: ../Service/Login_Logic.php");
+                header("Location: ../Client/homepage.php");
             }
         }
     }
